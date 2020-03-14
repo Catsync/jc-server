@@ -98,4 +98,8 @@ app.post('/comments/create', (req, res, next) =>
   createComment(req).then((response) => res.json(response)),
 );
 
+app.get('/', (req, res, next) =>
+  res.send('I declare shenanigans!')
+)
+
 app.listen(port, () => console.log(`JustComments listening on port ${port}!`));
