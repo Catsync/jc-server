@@ -12,9 +12,11 @@
   "dependencies": {
     "ajv": "6.10.2",
     "cors": "2.8.5",
+    "dotenv": "^8.2.0",
     "express": "4.17.1",
     "highlight.js": "9.15.8",
     "marked": "0.7.0",
+    "mongoose": "^5.9.4",
     "uuid": "3.3.2"
   }
 }

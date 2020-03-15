@@ -7,7 +7,8 @@ const url = require('url');
 
 const { validateComment } = require('./validation');
 const { renderMarkdown } = require('./markdown');
-const { storeComment, readComments } = require('./storage');
+// const { storeComment, readComments } = require('./storage');
+const { storeComment, readComments } = require('./mongo/storage');
 const config = require('./config');
 
 const app = express();
@@ -70,10 +71,12 @@ function getCommentUrl(comment) {
 }
 
 function mapComment(data) {
+  const [accountId, itemId] = data.itemId.split('::')
   return {
-    itemId: data.itemId,
+    itemId,
     commentUrl: data.commentUrl,
     commentId: data.commentId,
+    nested: data.nestedComments,
     replyTo: data.replyTo,
     parentId: data.parentId,
     userId: data.userId,
