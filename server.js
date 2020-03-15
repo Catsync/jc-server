@@ -19,9 +19,10 @@ app.use(express.json());
 
 async function getComments(req) {
   const pageId = req.query.pageId;
-  const comments = await readComments(pageId);
+  const data = await readComments(pageId);
+  const comments = mapComments(data)
   return {
-    comments: comments.map(mapComment),
+    comments,
   };
 }
 
@@ -70,13 +71,25 @@ function getCommentUrl(comment) {
   return url.format(parsedCommentUrl);
 }
 
+function mapComments(comments) {
+  const mapped = comments.map(mapComment)
+  const result = mapped.map(comment => {
+    const nested = comment.nestedComments.map(id => mapped.find(c => c.commentId === id))
+    return {
+      ...comment,
+      nested,
+    }
+  }).filter(c => !c.parentId)
+  return result
+}
+
 function mapComment(data) {
   const [accountId, itemId] = data.itemId.split('::')
   return {
     itemId,
     commentUrl: data.commentUrl,
     commentId: data.commentId,
-    nested: data.nestedComments,
+    nestedComments: data.nestedComments,
     replyTo: data.replyTo,
     parentId: data.parentId,
     userId: data.userId,

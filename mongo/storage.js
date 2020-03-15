@@ -27,6 +27,13 @@ async function storeComment(comment) {
   const newComment = new Comment(comment)
   newComment.itemId = keyFor(comment.itemId)
   await newComment.save()
+  if(comment.parentId) {
+    const parent = await Comment.findOne({ commentId: comment.parentId })
+    if(!parent.nestedComments.includes(comment.commentId)) {
+      parent.nestedComments.push(comment.commentId)
+      await parent.save()
+    }
+  }
   console.log('storeComment', comment)
 
   return

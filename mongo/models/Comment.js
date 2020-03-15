@@ -29,7 +29,8 @@ const commentSchema = new mongoose.Schema({
   pageTitle: String, 
   timezone: String, 
   username: String, 
-  emailNotifications: Boolean
+  emailNotifications: Boolean,
+  parentId: String,
 })
 
 mongoose.model('Comment', commentSchema)
